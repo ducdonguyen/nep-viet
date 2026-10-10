@@ -1,0 +1,375 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Kiến trúc tổng thể Nếp Việt: sản phẩm, dữ liệu, mô-đun, API, văn hóa và lộ trình."><title>Kiến trúc dự án — Nếp Việt</title><link rel="stylesheet" href="../css/variables.css"><link rel="stylesheet" href="../css/base.css"><link rel="stylesheet" href="../css/layout.css"><link rel="stylesheet" href="../css/components.css"><link rel="stylesheet" href="../css/docs.css"><link rel="stylesheet" href="../css/responsive.css"><link rel="icon" href="../assets/images/favicon.svg"></head><body><main class="document-page"><div class="doc-header"><a class="text-button" href="../index.html">← Về phòng phối đồ</a><div class="doc-actions"><a class="outline-button small" href="./architecture.md" download="Nep-Viet-Kien-truc.md">Tải bản Markdown ↓</a><button class="outline-button small" id="print-doc">In / lưu PDF</button></div></div><article class="architecture-content"><h1>NẾP VIỆT — KIẾN TRÚC SẢN PHẨM &amp; HỆ THỐNG</h1>
+<p>Phiên bản tài liệu: 1.0 · Ngày: 08/10/2026 · Sản phẩm: Việt phục Remix.</p>
+<h2>1. Mục tiêu và phạm vi</h2>
+<p>Nếp Việt giúp học sinh, sinh viên khám phá trang phục truyền thống của người Việt, thử phối màu và phụ kiện theo dịp, rồi lưu hoặc chia sẻ ý tưởng. Mục tiêu của bản đầu là hoàn thành một hành trình sử dụng thực sự: chọn → phối → xem → hiểu → lưu. Sản phẩm không tự nhận là công cụ phục dựng cổ phục hay dịch vụ thử đồ chính xác trên cơ thể.</p>
+<p>Phạm vi tuyển chọn ban đầu gồm áo dài, áo tứ thân và áo ngũ thân tay chẽn. Đây là ba nhóm minh họa, không đại diện toàn bộ trang phục của các cộng đồng tại Việt Nam. Địa phương là bối cảnh tìm hiểu, không phải ranh giới độc quyền của một trang phục. Những kiểu dáng có tính nghi lễ hoặc quy chế lịch sử riêng sẽ được bổ sung sau khi có tư liệu và người thẩm định.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Người dùng</th>
+<th>Nhu cầu</th>
+<th>Cách bản đầu đáp ứng</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Người mới tìm hiểu</td>
+<td>Biết chọn gì, mặc khi nào</td>
+<td>Thẻ nhận diện, dịp sử dụng, nguồn đọc thêm</td>
+</tr>
+<tr>
+<td>Học sinh, sinh viên</td>
+<td>Chuẩn bị chụp kỷ yếu, sự kiện trường</td>
+<td>Mẫu gợi ý, phối nhanh, lưu nhiều phương án</td>
+</tr>
+<tr>
+<td>Người thích thời trang</td>
+<td>Thử gu riêng mà hiểu bối cảnh văn hóa</td>
+<td>Ba phong cách, phối màu trực tiếp, nhắc cách tân</td>
+</tr>
+<tr>
+<td>Người làm nội dung (tương lai)</td>
+<td>Quản lý tư liệu có nguồn</td>
+<td>Quy trình biên tập, phiên bản và phê duyệt</td>
+</tr>
+</tbody></table></div>
+<h2>2. Các quyết định kiến trúc</h2>
+<p><strong>Bản 1: ứng dụng web tĩnh, mô-đun JavaScript, dữ liệu tại trình duyệt.</strong> Chưa cần backend cho hành trình phối đồ cá nhân. SVG cho phép đổi màu và phụ kiện tức thì, hoạt động không phụ thuộc mô hình AI hay khóa API, xuất được ảnh vector. Các mô-đun nghiệp vụ tách khỏi giao diện để có thể tái sử dụng khi nâng cấp.</p>
+<p><strong>Giai đoạn có tài khoản: một backend chia mô-đun.</strong> Dùng giao diện React/TypeScript khi số màn hình và tương tác cần đến; API trên Cloudflare Workers; D1 cho dữ liệu quan hệ; R2 cho ảnh và bản xuất. Chưa chia microservice. Chỉ tách xử lý ảnh sang dịch vụ GPU và hàng đợi khi triển khai thử đồ bằng ảnh vì tác vụ đó không phù hợp với tài nguyên Worker.</p>
+<p><strong>Gợi ý có giải thích.</strong> Bản đầu dùng quy tắc được viết rõ, không gắn nhãn AI và không chấm điểm “đúng văn hóa”. Gợi ý thẩm mỹ là đề xuất thiết kế; thông tin lịch sử có nguồn riêng. Màu trang phục không được dùng để suy diễn tính cách, đạo đức hoặc giá trị con người.</p>
+<p><strong>Chỉ lưu khi có chủ ý.</strong> Bản phối nháp và bộ sưu tập ở thiết bị hiện tại; sao lưu JSON và xuất SVG để người dùng tự giữ. Chưa có đồng bộ đa thiết bị. Liên kết chia sẻ chứa các lựa chọn của bản phối trong fragment URL, không chứa tên bộ sưu tập hay dữ liệu nhận dạng.</p>
+<h2>3. Kiến trúc logic và luồng dữ liệu</h2>
+<div class="arch-diagram" role="img" aria-label="Giao diện gọi nghiệp vụ, dữ liệu danh mục, SVG và kho bản phối. Bản 1 dùng localStorage, giai đoạn sau thêm API xác thực, D1 và R2."><div class="arch-box">GIAO DIỆN · Phòng phối đồ / Khám phá / Bộ sưu tập</div><div class="arch-arrow">↓</div><div class="arch-box">NGHIỆP VỤ · Kiểm tra lựa chọn / Gợi ý / Giải thích</div><div class="arch-arrow">↓</div><div class="arch-row"><div class="arch-box">Danh mục & tư liệu</div><div class="arch-box">Mockup SVG</div><div class="arch-box">Kho bản phối có phiên bản</div></div><div class="arch-arrow">↓ Lưu trữ</div><div class="arch-row"><div class="arch-box"><strong>Bản 1 đã triển khai</strong><br>localStorage + sao lưu JSON</div><div class="arch-box"><strong>Kiến trúc mở rộng</strong><br>API xác thực → D1 / R2</div></div></div>
+<ol>
+<li>Khi mở trang, đọc fragment được kiểm tra theo danh sách giá trị hợp lệ; nếu không có, đọc nháp; nếu dữ liệu hỏng, khôi phục trạng thái mặc định và báo rõ.</li>
+<li>Mỗi thao tác cập nhật trạng thái chuẩn hóa → tính gợi ý và nhắc văn hóa → dựng lại SVG và phần thông tin liên quan → ghi nháp.</li>
+<li>Khi lưu, tạo bản chụp cấu hình, tên và thời gian; thông báo thành công chỉ sau khi ghi dữ liệu thành công. Không ghi đè bản đã lưu khi sửa bản nháp.</li>
+<li>Khi so sánh, đọc hai bản chụp; hiển thị cùng một cấu trúc thông tin để so sánh trang phục, màu, phong cách, dịp, phụ kiện và lưu ý.</li>
+<li>Khi xuất, SVG chứa toàn bộ minh họa; JSON dùng cấu trúc có phiên bản để có thể phục hồi. Khi nhập, kiểm tra kích thước, kiểu dữ liệu, giá trị và giới hạn số bản phối trước khi hợp nhất.</li>
+</ol>
+<h2>4. Kiến trúc trải nghiệm</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Không gian</th>
+<th>Thành phần</th>
+<th>Hành động chính</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phòng phối đồ</td>
+<td>Chọn áo, dịp, phong cách, màu, phụ kiện; mockup; chuyện tà áo</td>
+<td>Phối trực tiếp; nhận gợi ý; đặt lại; lưu; xuất; sao chép liên kết</td>
+</tr>
+<tr>
+<td>Khám phá Việt phục</td>
+<td>Bộ lọc vùng bối cảnh; ba thẻ trang phục; tư liệu</td>
+<td>Đọc đặc điểm; mở nguồn; dùng trang phục đó</td>
+</tr>
+<tr>
+<td>Bộ sưu tập</td>
+<td>Các bản đã lưu; lựa chọn so sánh; sao lưu</td>
+<td>Mở để sửa; đổi tên; xóa; so sánh hai bản; xuất/nhập JSON</td>
+</tr>
+<tr>
+<td>Tài liệu dự án</td>
+<td>Kiến trúc, phạm vi, lộ trình, nguồn</td>
+<td>Đọc trực tiếp; tải Markdown; in thành PDF từ trình duyệt</td>
+</tr>
+</tbody></table></div>
+<p>Luồng ưu tiên: người mới chọn một mẫu gợi ý hoặc một dịp → điều chỉnh màu/phụ kiện → thấy kết quả ngay → đọc lời giải thích → lưu. Không bắt đăng nhập, nhập thông tin cá nhân hoặc đi qua onboarding dài trước khi thử.</p>
+<p>Thiết kế: giấy ngà <code>#F7F3EA</code>, đỏ gạch <code>#963F32</code>, mực nâu <code>#302D26</code>, xanh rêu <code>#59644C</code>, vàng đất <code>#BA914A</code>. Chữ tiêu đề có chân và chữ chức năng không chân. Khung minh họa lấy cảm hứng sân nhà, mái ngói và cành lá; tránh gán họa tiết cung đình cụ thể khi chưa có tư liệu. Hình minh họa là nét vector đương đại, có nhãn “mockup minh họa”.</p>
+<p>Máy tính dùng bố cục ba vùng: điều khiển, kết quả, giải thích. Máy tính bảng dùng hai cột; điện thoại đưa hình kết quả lên trước và nhóm điều khiển xuống dưới. Nút có nhãn, trạng thái chọn không chỉ dựa vào màu, dùng bàn phím được, dialog giữ tiêu điểm và đóng bằng Escape; tôn trọng reduced motion.</p>
+<h2>5. Ranh giới mô-đun bản 1</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tệp</th>
+<th>Trách nhiệm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>js/data/catalog.mjs</code></td>
+<td>Danh mục áo, màu, dịp, phụ kiện, phong cách, nguồn và mẫu gợi ý</td>
+</tr>
+<tr>
+<td><code>js/core/domain.mjs</code></td>
+<td>Trạng thái mặc định; chuẩn hóa; gợi ý; cảnh báo; mã hóa liên kết; kiểm tra nhập</td>
+</tr>
+<tr>
+<td><code>js/core/storage.mjs</code></td>
+<td>Repository cho nháp và bộ sưu tập; không phụ thuộc DOM</td>
+</tr>
+<tr>
+<td><code>js/core/state.mjs</code></td>
+<td>Trạng thái dùng chung của phiên (bản đang phối, bộ sưu tập, trang đang xem); nạp từ trình duyệt hoặc liên kết</td>
+</tr>
+<tr>
+<td><code>js/core/router.mjs</code></td>
+<td>Chuyển giữa ba trang Khám phá, Phòng phối đồ, Bộ sưu tập</td>
+</tr>
+<tr>
+<td><code>js/components/icons.mjs</code></td>
+<td>Bộ biểu tượng SVG nét mảnh</td>
+</tr>
+<tr>
+<td><code>js/components/mannequin.mjs</code></td>
+<td>Vẽ người mẫu, cấu trúc trang phục, phụ kiện, bối cảnh; xuất SVG độc lập</td>
+</tr>
+<tr>
+<td><code>js/components/ui.mjs</code></td>
+<td>Thông báo, nút tùy chọn, tải tệp</td>
+</tr>
+<tr>
+<td><code>js/components/dialogs.mjs</code></td>
+<td>Hộp thoại: chuyện tà áo, lưu/đổi tên, so sánh, chia sẻ, giới thiệu</td>
+</tr>
+<tr>
+<td><code>js/pages/studio.mjs</code></td>
+<td>Trang Phòng phối đồ: dựng giao diện, áp dụng và lưu nháp</td>
+</tr>
+<tr>
+<td><code>js/pages/explore.mjs</code></td>
+<td>Trang Khám phá: bộ lọc vùng và thẻ trang phục</td>
+</tr>
+<tr>
+<td><code>js/pages/collection.mjs</code></td>
+<td>Trang Bộ sưu tập: lưới bản phối, chọn so sánh</td>
+</tr>
+<tr>
+<td><code>js/app.mjs</code></td>
+<td>Khởi động ứng dụng và điều phối sự kiện</td>
+</tr>
+<tr>
+<td><code>css/*.css</code></td>
+<td>Biến thiết kế, nền tảng, bố cục, thành phần, responsive, trạng thái truy cập</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>Kiểm thử nghiệp vụ, dữ liệu bất thường, lưu trữ và liên kết</td>
+</tr>
+</tbody></table></div>
+<p>Giao diện chỉ thao tác với trạng thái hợp lệ. SVG chỉ nhận các ID đã chuẩn hóa; không nhúng SVG hay HTML người dùng tải lên. Tên bản phối được escape trước khi đưa vào HTML. Việc bổ sung trang phục cần đồng thời có metadata, renderer và tư liệu; không chỉ thêm một thẻ hình.</p>
+<h2>6. Mô hình dữ liệu</h2>
+<h3>Bản 1 đã triển khai</h3>
+<pre><code class="language-text">OutfitConfig
+  garment: ao-dai | tu-than | ngu-than
+  occasion: tet | ky-yeu | le-hoi | dao-pho | di-san
+  style: thanh-lich | truyen-thong | pha-cach
+  color: do-gach | xanh-reu | vang-mo | hong-sen | xanh-cham | trang-nga
+  bottom: trang-nga | nau-dat | den-muc
+  accessories: tập ID trong [non-la, khan-van, quat, tui-may]
+  avatar: toc-dai | toc-ngan
+  backdrop: san-dinh | giay-ngua
+
+SavedLook
+  id: UUID, name: chuỗi ≤ 60 ký tự, createdAt: ISO-8601
+  config: OutfitConfig
+
+LookbookBackup
+  app: nep-viet, version: 1, exportedAt: ISO-8601, looks: SavedLook[]
+</code></pre>
+<p>Giới hạn bản đầu: 50 bản phối mỗi trình duyệt; tệp nhập tối đa 1 MB và tối đa 50 bản; nhập thêm không xóa các bản đang có. Các ID, thời gian và cấu hình không hợp lệ bị từ chối. Dữ liệu lỗi không được âm thầm thay bằng trạng thái khác rồi lưu.</p>
+<h3>Lược đồ đích khi có backend (chưa triển khai)</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Bảng</th>
+<th>Trường và ràng buộc chính</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>users</td>
+<td>id PK, auth_subject UNIQUE, display_name, created_at, deleted_at</td>
+</tr>
+<tr>
+<td>garments</td>
+<td>id PK, slug UNIQUE, title, category, description, version, publication_status</td>
+</tr>
+<tr>
+<td>garment_regions</td>
+<td>garment_id FK, region_id FK; khóa ghép; liên kết nhiều-nhiều</td>
+</tr>
+<tr>
+<td>garment_variants</td>
+<td>id PK, garment_id FK, silhouette, asset_key, period_note, version</td>
+</tr>
+<tr>
+<td>sources</td>
+<td>id PK, title, publisher, url, accessed_at, source_type, rights_note</td>
+</tr>
+<tr>
+<td>cultural_claims</td>
+<td>id PK, garment_id FK, text, source_id FK, confidence_note, revision</td>
+</tr>
+<tr>
+<td>reviews</td>
+<td>id PK, claim_id FK, reviewer_id FK, decision, note, reviewed_at</td>
+</tr>
+<tr>
+<td>outfits</td>
+<td>id PK, owner_id FK, name, config_json, schema_version, revision, timestamps</td>
+</tr>
+<tr>
+<td>lookbooks</td>
+<td>id PK, owner_id FK, name, visibility; mặc định private</td>
+</tr>
+<tr>
+<td>lookbook_items</td>
+<td>lookbook_id FK, outfit_id FK, sort_order; khóa ghép</td>
+</tr>
+<tr>
+<td>media_assets</td>
+<td>id PK, owner_id FK, r2_key UNIQUE, mime, size, purpose, delete_after</td>
+</tr>
+<tr>
+<td>share_links</td>
+<td>id PK, outfit_id FK, token_hash UNIQUE, expires_at, revoked_at</td>
+</tr>
+<tr>
+<td>content_reports</td>
+<td>id PK, target_id, category, message, status, created_at</td>
+</tr>
+<tr>
+<td>audit_events</td>
+<td>id PK, actor_id, action, entity_id, revision, created_at</td>
+</tr>
+</tbody></table></div>
+<p>Chỉ mục ưu tiên: outfits(owner_id, updated_at), garments(publication_status, category), reviews(claim_id, reviewed_at), lookbook_items(lookbook_id, sort_order). JSON phù hợp cấu hình hình ảnh thay đổi theo phiên bản; các quan hệ sở hữu, nguồn và kiểm duyệt vẫn được chuẩn hóa. Bật khóa ngoại, migration có phiên bản, dùng revision để chống mất cập nhật.</p>
+<h2>7. API đích (chưa triển khai)</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Phương thức &amp; đường dẫn</th>
+<th>Hành vi</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET /api/v1/garments?region=&amp;occasion=&amp;cursor=</td>
+<td>Danh mục công bố, phân trang, ETag</td>
+</tr>
+<tr>
+<td>GET /api/v1/garments/:id</td>
+<td>Chi tiết, nguồn và phiên bản nội dung</td>
+</tr>
+<tr>
+<td>POST /api/v1/recommendations</td>
+<td>Nhận điều kiện, trả cấu hình cùng các lý do</td>
+</tr>
+<tr>
+<td>GET/POST /api/v1/outfits</td>
+<td>Danh sách của chính người dùng / tạo bản mới</td>
+</tr>
+<tr>
+<td>PATCH /api/v1/outfits/:id</td>
+<td>Sửa với If-Match revision; trả 409 khi xung đột</td>
+</tr>
+<tr>
+<td>DELETE /api/v1/outfits/:id</td>
+<td>Xóa bản thuộc chủ sở hữu</td>
+</tr>
+<tr>
+<td>POST /api/v1/outfits/:id/shares</td>
+<td>Tạo liên kết có thể thu hồi, có hạn nếu chọn</td>
+</tr>
+<tr>
+<td>DELETE /api/v1/shares/:id</td>
+<td>Thu hồi quyền xem</td>
+</tr>
+<tr>
+<td>POST /api/v1/reports</td>
+<td>Báo lỗi văn hóa hoặc nội dung</td>
+</tr>
+<tr>
+<td>POST /api/v1/admin/claims/:id/reviews</td>
+<td>Biên tập viên phê duyệt hoặc yêu cầu sửa</td>
+</tr>
+</tbody></table></div>
+<p>Các endpoint trả mã lỗi ổn định cùng thông báo tiếng Việt, request_id và trường lỗi cụ thể. Server kiểm tra lại toàn bộ dữ liệu, xác thực và quyền sở hữu; không tin owner_id gửi từ client. Áp dụng rate limit cho ghi, chia sẻ và tác vụ tốn tài nguyên. Client hủy request cũ khi đổi bộ lọc, hiển thị loading/empty/error riêng.</p>
+<h2>8. Bộ gợi ý và kiểm tra văn hóa</h2>
+<p>Bản đầu chọn mẫu nền theo dịp; giữ loại áo người dùng đã chọn; áp dụng bảng màu, phong cách và phụ kiện có lý do. Kiểm tra hòa sắc chỉ đưa mô tả như tương phản với quần sáng hoặc tổng thể trầm; không đưa điểm số khoa học giả. Các quy tắc là hàm thuần, có ID ổn định và có thể kiểm thử.</p>
+<p>Ví dụ: phong cách phá cách với áo ngũ thân cần được gọi là bản phối đương đại; thẻ thông tin nhắc cấu trúc gốc không đồng nhất với mọi áo cách tân. Bối cảnh di sản hoặc lễ hội nhắc kiểm tra yêu cầu của nơi tổ chức. Nón và khăn vấn là hai lựa chọn đội đầu loại trừ lẫn nhau trong mockup hiện tại; chọn một sẽ thay cái kia. Hai phụ kiện cầm tay cũng được giới hạn một để tránh chồng hình vô nghĩa.</p>
+<p>Khi mở rộng, tách luật thành eligibility (hạn chế có căn cứ), context (dịp và địa phương), visual (màu/phụ kiện), explanation (lý do và nguồn). Mọi luật có version, phạm vi, mức độ và người duyệt. Không suy diễn từ giới tính, ngoại hình hay dân tộc của người dùng. Xung đột văn hóa tạo thông tin ngữ cảnh, không áp đặt nhận định đạo đức.</p>
+<h2>9. Quản trị nội dung và nguồn</h2>
+<p>Luồng dự kiến: <strong>nháp → gắn nguồn → kiểm tra nội dung → thẩm định chuyên môn → công bố → theo dõi phản hồi → sửa phiên bản</strong>. Mỗi nhận định cần biết nguồn nào hỗ trợ, biến thể trang phục nào và thời kỳ nào. Những điểm còn tranh luận phải diễn đạt là một cách lý giải hoặc tạm không công bố.</p>
+<p>Bản đầu tổng hợp ngắn để trải nghiệm, đã tra cứu nguồn nhưng <strong>chưa được chuyên gia cổ phục thẩm định</strong>. SVG là mockup giản lược, không phải rập may hay bản phục dựng. Không dùng hình ảnh từ các nguồn bên ngoài; hình vector do dự án tạo. Tư liệu tham khảo không đồng nghĩa được phép sao chép hình ảnh trong tư liệu đó.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Chủ đề</th>
+<th>Nguồn tham khảo được tra cứu ngày 08/10/2026</th>
+<th>Phạm vi sử dụng</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Áo dài</td>
+<td><a href="https://vietnam.travel/vi/things-to-do/all-about-ao-dai-vietnams-national-dress">Vietnam Tourism — Tất cả về áo dài</a></td>
+<td>Quá trình biến đổi, hình thức và dịp mặc; không khẳng định một quy định đồng phục áp dụng cho mọi trường</td>
+</tr>
+<tr>
+<td>Áo ngũ thân</td>
+<td><a href="https://visithue.vn/Tinh-te-ao-dai-ngu-than.html/?pid=MjA1MjR8Y3NkbGRs0">Visit Hue — Tinh tế áo dài ngũ thân</a></td>
+<td>Năm thân, cổ đứng, hàng khuy và sự đa dạng; cần kiểm chứng thêm khi phục dựng</td>
+</tr>
+<tr>
+<td>Áo tứ thân</td>
+<td><a href="https://vi.wikipedia.org/wiki/%C3%81o_t%E1%BB%A9_th%C3%A2n">Wikipedia tiếng Việt — Áo tứ thân</a></td>
+<td>Nguồn tổng quan thứ cấp; nhận diện lớp áo/yếm/váy; ưu tiên thay bằng tư liệu bảo tàng ở vòng thẩm định</td>
+</tr>
+</tbody></table></div>
+<p>Không chốt niên đại khởi nguồn áo tứ thân hoặc ý nghĩa biểu tượng tuyệt đối khi chưa đủ căn cứ. Mở rộng tới trang phục các cộng đồng khác phải phối hợp người am hiểu của chính cộng đồng, xin phép dùng hình và ghi rõ bối cảnh.</p>
+<h2>10. Dữ liệu cá nhân và độ tin cậy</h2>
+<p>Bản 1 không thu ảnh, email, vị trí, số đo; không có analytics, quảng cáo, trình theo dõi hoặc API bên ngoài. Dữ liệu lưu ở thiết bị có thể mất khi xóa dữ liệu trình duyệt; giao diện cung cấp sao lưu. Bản phối chia sẻ hiện tại là dữ liệu nhúng trong liên kết và không thể thu hồi các bản sao đã được gửi. Site đang ở chế độ riêng tư nên liên kết không tự cấp quyền truy cập cho người khác.</p>
+<p>Đầu vào URL, JSON và localStorage đều coi là không tin cậy: kiểm tra ID, giới hạn dung lượng, loại khóa lạ, escape tên. Không dùng eval. Các link nguồn dùng HTTPS và rel=noopener noreferrer. Khi ghi bị chặn hoặc hết quota, thông báo rõ và không báo lưu thành công. Khi xóa một bản, yêu cầu xác nhận trong UI.</p>
+<p>Nếu thêm ảnh thử đồ: chỉ tải sau hành động rõ ràng của người dùng, nêu mục đích và hạn lưu, có nút xóa, URL ký ngắn hạn, kiểm tra định dạng và kích thước, loại metadata; không suy luận đặc điểm nhạy cảm. Quy trình dành cho người chưa thành niên và yêu cầu pháp lý phải được rà soát trước khi phát hành tính năng đó.</p>
+<h2>11. Hiệu năng, kiểm thử và vận hành</h2>
+<p>Bản 1 không cần tải framework hay font từ CDN. Các thao tác phối đồ chạy cục bộ. Mục tiêu thiết kế: giao diện phản hồi dưới 100 ms trên thiết bị phổ thông, CLS dưới 0,1; đây là mục tiêu, chưa phải số đo. Giữ SVG nhẹ, không render toàn bộ bộ sưu tập nếu mở rộng tới hàng nghìn bản.</p>
+<p>Kiểm thử cần thiết: chuẩn hóa dữ liệu, xung đột phụ kiện, liên kết chia sẻ khứ hồi, JSON nhập sai phiên bản, ID độc hại, giữ đúng cấu hình khi lưu/mở, lỗi quota, giới hạn số bản. Kiểm tra tính toàn vẹn nguồn tệp và các entrypoint. Browser QA nên kiểm tra 360/768/1440 px, bàn phím, dialog, đổi áo/màu, tải tệp và localStorage sau tải lại. Nếu môi trường không hỗ trợ browser QA thì ghi rõ giới hạn, không xem unit test là bằng chứng đã kiểm tra hiển thị.</p>
+<p>Triển khai bằng version source đã commit và đẩy vào repository, đóng gói đúng thư mục gốc ứng dụng (chứa index.html) rồi phát hành riêng tư. Mỗi phiên bản cần biết source commit và trạng thái deployment. Rollback dùng lại phiên bản tốt đã lưu. Khi có backend: log có request_id và không chứa ảnh/token, metric tỷ lệ lỗi và thời gian gợi ý, cảnh báo lỗi ghi dữ liệu, backup định kỳ và diễn tập phục hồi; đặt ngân sách tác vụ ảnh.</p>
+<h2>12. Phạm vi phát hành và lộ trình</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Giai đoạn</th>
+<th>Nội dung</th>
+<th>Điều kiện hoàn tất</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V1 — bản đang xây</td>
+<td>3 trang phục; 5 dịp; 3 phong cách; 6 màu áo; 3 màu phần dưới; 4 phụ kiện; 2 nhân vật; 2 nền; lưu, so sánh, chia sẻ cấu hình, SVG, sao lưu JSON; tài liệu</td>
+<td>Các luồng lõi chạy; input được kiểm tra; có nguồn và nhãn mockup</td>
+</tr>
+<tr>
+<td>V1.1 — hoàn thiện nội dung</td>
+<td>Thẩm định chuyên gia, bổ sung hình chuẩn, kiểm tra trên thiết bị thực, tinh chỉnh khả năng truy cập</td>
+<td>Mỗi áo được thẩm định và thử nghiệm với người dùng mục tiêu</td>
+</tr>
+<tr>
+<td>V2 — tài khoản &amp; CMS</td>
+<td>Đăng nhập, bộ sưu tập cloud, phân quyền biên tập, chia sẻ có thu hồi, phục hồi phiên bản</td>
+<td>Kiểm thử quyền sở hữu và đồng bộ; không lộ bộ sưu tập riêng tư</td>
+</tr>
+<tr>
+<td>V3 — cá nhân hóa</td>
+<td>Thời tiết từ vị trí do người dùng nhập, nhiều bộ sưu tập địa phương, tìm kiếm có chỉ mục</td>
+<td>Dữ liệu nguồn rõ ràng; bộ gợi ý có giải thích; xử lý lỗi dịch vụ</td>
+</tr>
+<tr>
+<td>V4 — thử đồ bằng ảnh</td>
+<td>Worker điều phối + hàng đợi + dịch vụ mô hình ảnh riêng; consent, xóa ảnh, theo dõi chi phí</td>
+<td>Đánh giá chất lượng, quyền riêng tư và độ chính xác trang phục trước phát hành</td>
+</tr>
+</tbody></table></div>
+<p>Không bao gồm ở V1: đăng nhập, đồng bộ nhiều thiết bị, thanh toán, mua/thuê đồ, thời tiết trực tiếp, cộng đồng công khai, AI tạo ảnh và thử đồ từ ảnh thật. Kiến trúc dành chỗ để thêm các khả năng này nhưng không giả lập chúng bằng nút không hoạt động.</p>
+<h2>13. Tiêu chí nghiệm thu theo đề bài</h2>
+<ol>
+<li>Chọn từng loại áo phải đổi cấu trúc mockup, đặc điểm và nguồn tương ứng.</li>
+<li>Đổi màu áo, màu phần dưới, phụ kiện hoặc nhân vật phải phản ánh trong hình.</li>
+<li>Chọn dịp và bấm gợi ý phải tạo bản phối có lời giải thích, vẫn giữ nhóm trang phục đã chọn.</li>
+<li>Lưu ít nhất hai bản, đổi tên, tải lại, mở lại và so sánh được; xóa có xác nhận.</li>
+<li>Xuất SVG mở độc lập được; JSON xuất ra nhập lại hợp lệ; URL chia sẻ khôi phục cùng cấu hình.</li>
+<li>Thông tin văn hóa có nguồn và trạng thái biên tập; mockup không bị giới thiệu là phục dựng chính xác.</li>
+<li>Trường hợp nhập lỗi, bộ sưu tập đầy hoặc lưu bị chặn phải có phản hồi cụ thể.</li>
+<li>Tài liệu kiến trúc được lưu cùng mã nguồn để thay đổi sau này có thể đối chiếu với hành vi sản phẩm.</li>
+</ol>
+</article></main><script src="./document.js"></script></body></html>

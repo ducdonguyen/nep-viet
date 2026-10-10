@@ -64,12 +64,20 @@ Máy tính dùng bố cục ba vùng: điều khiển, kết quả, giải thíc
 
 | Tệp | Trách nhiệm |
 |---|---|
-| `dist/catalog.mjs` | Danh mục áo, màu, dịp, phụ kiện, phong cách, nguồn và mẫu gợi ý |
-| `dist/domain.mjs` | Trạng thái mặc định; chuẩn hóa; gợi ý; cảnh báo; mã hóa liên kết; kiểm tra nhập |
-| `dist/render.mjs` | Vẽ người mẫu, cấu trúc trang phục, phụ kiện, bối cảnh; xuất SVG độc lập |
-| `dist/storage.mjs` | Repository cho nháp và bộ sưu tập; không phụ thuộc DOM |
-| `dist/app.mjs` | Điều phối sự kiện, render giao diện, dialog, tải tệp, thông báo |
-| `dist/styles.css` | Token thiết kế, layout, component, breakpoint, trạng thái truy cập |
+| `js/data/catalog.mjs` | Danh mục áo, màu, dịp, phụ kiện, phong cách, nguồn và mẫu gợi ý |
+| `js/core/domain.mjs` | Trạng thái mặc định; chuẩn hóa; gợi ý; cảnh báo; mã hóa liên kết; kiểm tra nhập |
+| `js/core/storage.mjs` | Repository cho nháp và bộ sưu tập; không phụ thuộc DOM |
+| `js/core/state.mjs` | Trạng thái dùng chung của phiên (bản đang phối, bộ sưu tập, trang đang xem); nạp từ trình duyệt hoặc liên kết |
+| `js/core/router.mjs` | Chuyển giữa ba trang Khám phá, Phòng phối đồ, Bộ sưu tập |
+| `js/components/icons.mjs` | Bộ biểu tượng SVG nét mảnh |
+| `js/components/mannequin.mjs` | Vẽ người mẫu, cấu trúc trang phục, phụ kiện, bối cảnh; xuất SVG độc lập |
+| `js/components/ui.mjs` | Thông báo, nút tùy chọn, tải tệp |
+| `js/components/dialogs.mjs` | Hộp thoại: chuyện tà áo, lưu/đổi tên, so sánh, chia sẻ, giới thiệu |
+| `js/pages/studio.mjs` | Trang Phòng phối đồ: dựng giao diện, áp dụng và lưu nháp |
+| `js/pages/explore.mjs` | Trang Khám phá: bộ lọc vùng và thẻ trang phục |
+| `js/pages/collection.mjs` | Trang Bộ sưu tập: lưới bản phối, chọn so sánh |
+| `js/app.mjs` | Khởi động ứng dụng và điều phối sự kiện |
+| `css/*.css` | Biến thiết kế, nền tảng, bố cục, thành phần, responsive, trạng thái truy cập |
 | `tests/` | Kiểm thử nghiệp vụ, dữ liệu bất thường, lưu trữ và liên kết |
 
 Giao diện chỉ thao tác với trạng thái hợp lệ. SVG chỉ nhận các ID đã chuẩn hóa; không nhúng SVG hay HTML người dùng tải lên. Tên bản phối được escape trước khi đưa vào HTML. Việc bổ sung trang phục cần đồng thời có metadata, renderer và tư liệu; không chỉ thêm một thẻ hình.
@@ -173,7 +181,7 @@ Bản 1 không cần tải framework hay font từ CDN. Các thao tác phối đ
 
 Kiểm thử cần thiết: chuẩn hóa dữ liệu, xung đột phụ kiện, liên kết chia sẻ khứ hồi, JSON nhập sai phiên bản, ID độc hại, giữ đúng cấu hình khi lưu/mở, lỗi quota, giới hạn số bản. Kiểm tra tính toàn vẹn nguồn tệp và các entrypoint. Browser QA nên kiểm tra 360/768/1440 px, bàn phím, dialog, đổi áo/màu, tải tệp và localStorage sau tải lại. Nếu môi trường không hỗ trợ browser QA thì ghi rõ giới hạn, không xem unit test là bằng chứng đã kiểm tra hiển thị.
 
-Triển khai bằng version source đã commit và đẩy vào repository, đóng gói đúng thư mục dist rồi phát hành riêng tư. Mỗi phiên bản cần biết source commit và trạng thái deployment. Rollback dùng lại phiên bản tốt đã lưu. Khi có backend: log có request_id và không chứa ảnh/token, metric tỷ lệ lỗi và thời gian gợi ý, cảnh báo lỗi ghi dữ liệu, backup định kỳ và diễn tập phục hồi; đặt ngân sách tác vụ ảnh.
+Triển khai bằng version source đã commit và đẩy vào repository, đóng gói đúng thư mục gốc ứng dụng (chứa index.html) rồi phát hành riêng tư. Mỗi phiên bản cần biết source commit và trạng thái deployment. Rollback dùng lại phiên bản tốt đã lưu. Khi có backend: log có request_id và không chứa ảnh/token, metric tỷ lệ lỗi và thời gian gợi ý, cảnh báo lỗi ghi dữ liệu, backup định kỳ và diễn tập phục hồi; đặt ngân sách tác vụ ảnh.
 
 ## 12. Phạm vi phát hành và lộ trình
 

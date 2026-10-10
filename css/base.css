@@ -1,0 +1,93 @@
+/* Nền tảng: reset, chữ, nút, liên kết, trạng thái truy cập */
+* {
+  box-sizing:border-box
+}
+
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:14px/1.55 var(--sans);
+  -webkit-font-smoothing:antialiased
+}
+
+button,input,select {
+  font:inherit
+}
+
+button,a,input,select {
+  -webkit-tap-highlight-color:transparent
+}
+
+button {
+  color:inherit;
+  cursor:pointer
+}
+
+button {
+  border:0;
+  background:none
+}
+
+a {
+  color:inherit;
+  text-underline-offset:4px
+}
+
+button:disabled {
+  opacity:.5;
+  cursor:not-allowed
+}
+
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
+  outline:3px solid #9b7849;
+  outline-offset:4px
+}
+
+button svg {
+  flex-shrink:0
+}
+
+.icon {
+  vertical-align:middle;
+  flex-shrink:0
+}
+
+p,h1,h2,h3 {
+  margin:0
+}
+
+h1,h2,h3 {
+  font-weight:400
+}
+
+button {
+  touch-action:manipulation
+}
+
+[hidden] {
+  display:none!important
+}
+
+.sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap
+}
+
+.skip-link {
+  position:fixed;
+  z-index:20;
+  left:16px;
+  top:-60px;
+  background:var(--rust);
+  color:#fff;
+  padding:12px
+}
+
+.skip-link:focus {
+  top:12px
+}

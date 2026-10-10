@@ -5,8 +5,13 @@
  <meta name="theme-color" content="#f7f3ea">
  <meta name="description" content="Nếp Việt — khám phá và phối áo dài, áo tứ thân, áo ngũ thân theo gu của bạn. Nếp xưa, gu mới.">
  <title>Nếp Việt — Nếp xưa, gu mới</title>
- <link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
- <script type="module" src="./app.mjs"></script>
+ <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml"> <link rel="stylesheet" href="./css/variables.css">
+ <link rel="stylesheet" href="./css/base.css">
+ <link rel="stylesheet" href="./css/layout.css">
+ <link rel="stylesheet" href="./css/components.css">
+ <link rel="stylesheet" href="./css/docs.css">
+ <link rel="stylesheet" href="./css/responsive.css">
+ <script type="module" src="./js/app.mjs"></script>
 </head>
 <body>
  <a class="skip-link" href="#main">Đến nội dung chính</a>
@@ -46,8 +51,8 @@
   <section id="explore-view" class="page-view" hidden><div class="intro compact"><div><p class="eyebrow">MỖI NẾP ÁO, MỘT CÂU CHUYỆN</p><h1>Chạm vào <em>nét Việt.</em></h1><p class="intro-copy">Hiểu một chút về tà áo, để mỗi lần mặc đều có ý nghĩa riêng.</p></div></div><div class="explore-toolbar"><div id="region-filters" class="filter-pills"></div><span>03 trang phục được tuyển chọn</span></div><div id="explore-grid" class="explore-grid"></div><div class="editorial-note"><strong>Một điểm bắt đầu để tìm hiểu.</strong><p>Ba nhóm áo này không đại diện cho toàn bộ trang phục các cộng đồng tại Việt Nam. Nội dung có nguồn đọc thêm, chưa được chuyên gia cổ phục thẩm định; hình là mockup giản lược. Địa phương dưới đây là bối cảnh tìm hiểu, không giới hạn nơi có thể mặc.</p></div></section>
   <section id="collection-view" class="page-view" hidden><div class="intro compact"><div><p class="eyebrow">CẤT GIỮ NHỮNG ĐIỀU MÌNH THÍCH</p><h1>Một tủ áo, <em>nhiều chất riêng.</em></h1><p class="intro-copy">Những bản phối của bạn, được lưu trên trình duyệt này.</p></div></div><div class="collection-toolbar"><p id="collection-total"></p><div><button class="outline-button small" data-action="backup" id="backup-button"></button><button class="outline-button small" data-action="import" id="import-button"></button><input type="file" id="import-file" accept="application/json,.json" hidden></div></div><p class="storage-note">Tải bản sao lưu để giữ lại bộ sưu tập khi đổi thiết bị hoặc xóa dữ liệu trình duyệt. Tối đa 50 bản phối.</p><div id="collection-grid" class="collection-grid"></div><div id="compare-bar" class="compare-bar" hidden></div></section>
  </main>
- <footer class="site-footer"><div><span class="footer-brand">nếp việt</span><span>Gìn giữ nét xưa · Viết tiếp chuyện mình</span></div><div><a href="./architecture.html">Kiến trúc dự án</a><button data-action="about">Về phiên bản này</button><span>PHIÊN BẢN 1.0</span></div></footer>
+ <footer class="site-footer"><div><span class="footer-brand">nếp việt</span><span>Gìn giữ nét xưa · Viết tiếp chuyện mình</span></div><div><a href="./docs/architecture.html">Kiến trúc dự án</a><button data-action="about">Về phiên bản này</button><span>PHIÊN BẢN 1.0</span></div></footer>
  <dialog id="modal" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title"></h2><button class="icon-button" data-action="close" aria-label="Đóng" id="modal-close"></button></div><div id="modal-content"></div></dialog>
  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
- <noscript><p class="noscript">Vui lòng bật JavaScript để sử dụng phòng phối đồ. Bạn vẫn có thể đọc <a href="./architecture.html">kiến trúc dự án</a>.</p></noscript>
+ <noscript><p class="noscript">Vui lòng bật JavaScript để sử dụng phòng phối đồ. Bạn vẫn có thể đọc <a href="./docs/architecture.html">kiến trúc dự án</a>.</p></noscript>
 </body></html>

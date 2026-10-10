@@ -1,0 +1,16 @@
+@charset "UTF-8";
+/* Biến thiết kế: màu, cỡ chữ, bo góc (token) */
+:root {
+  --paper:#f7f3ea;
+  --surface:#fffcf6;
+  --ink:#302d26;
+  --muted:#746f62;
+  --rust:#963f32;
+  --rust-dark:#783024;
+  --line:#e1dbcc;
+  --olive:#59644c;
+  --gold:#ba914a;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:Arial,Helvetica,sans-serif;
+  color-scheme:light
+}

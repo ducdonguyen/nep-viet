@@ -6,6 +6,24 @@ export function outfitSVG(c,{exported=false}={}){
  const d=describe(c),p='n'+(++counter),col=d.color.hex,bot=d.bottom.hex;
  const has=id=>c.accessories.includes(id), tu=c.garment==='tu-than',ngu=c.garment==='ngu-than';
  const long=c.avatar==='toc-dai';
+ const hands = tu
+  ? `M218 286 L208 327 Q205 341 213 347
+     Q219 347 220 334 L232 292 Z
+     M329 291 L331 329 Q332 342 340 344
+     Q345 340 344 331 L348 286 Z`
+  : ngu
+    ? `M208 300 L223 305 L216 323
+       Q217 328 214 330 L211 337
+       Q209 341 206 339 Q201 336 203 329 Z
+       M340 305 L355 299 L358 327
+       Q360 334 356 338 Q353 341 351 337
+       L347 328 Q343 329 342 325 Z`
+    : `M216 297 L229 302 L221 322
+       Q222 327 219 329 L216 337
+       Q214 341 211 339 Q206 336 208 329 Z
+       M331 303 L344 297 L351 327
+       Q354 334 350 338 Q347 341 345 337
+       L341 328 Q337 329 336 325 Z`;
  const silhouette=tu?'M251 186 237 203 220 312 228 337 222 502Q241 517 258 510L279 291 301 510Q320 515 337 501L328 329 320 202 300 187 294 230 280 271 264 229Z':ngu?'M262 179 244 189Q234 191 228 212L203 305 225 315 244 260 232 512Q282 536 331 512L317 260 338 315 360 305 333 212Q326 191 308 187L299 179Z':'M263 179 246 191Q236 195 231 211L212 302 231 310 250 247Q249 275 255 295L230 508Q245 520 263 512L277 376 279 513Q305 526 329 504L304 294Q310 273 308 247L330 309 349 301 329 211Q325 195 312 190L298 180Z';
  const motif=c.style==='pha-cach'?`<g opacity=".45" fill="#f5deb0"><path d="M282 387c-38-26-55-5-28 18-25 22 4 47 28 16 25 29 50 2 27-18 24-24 2-45-27-16Z"/><circle cx="282" cy="407" r="7" fill="${col}"/></g>`:c.style==='thanh-lich'?`<g fill="none" stroke="#ead7a5" stroke-width="1.5" opacity=".65"><path d="M299 488Q262 422 297 363M281 440q-29 0-21-26 27 4 21 26ZM286 410q26 0 24-24-29 3-24 24ZM290 385q-19-6-10-24 18 9 10 24Z"/><path d="M299 460q16-2 17-20-23 1-17 20Z"/></g>`:'';
  const scene=c.backdrop==='san-dinh'?`
@@ -35,7 +53,40 @@ export function outfitSVG(c,{exported=false}={}){
  <path d="M253 496h23l-7 85h-16ZM293 497h20l4 85h-17Z" fill="url(#${p}shade)"/>
  ${tu?`<path d="M247 290 223 554q57 22 112 0l-28-264Z" fill="${bot}"/><path d="m252 334-12 219m27-221-6 224m28-224 8 224m7-227 15 221" stroke="#3d342b" stroke-opacity=".18" fill="none"/>`:''}
  ${c.style==='pha-cach'?'<path d="m246 579-15 10q-4 7 5 9h39v-16ZM294 582v16h44q6-3 0-7l-17-12Z" fill="#f5eee1" stroke="#a89a80"/><path d="M235 593h38m22 0h39m-80-8h12m39 0h12" stroke="#9b8066"/>':'<path d="m247 579-13 13q-3 5 6 6h34l2-18ZM294 580v17h36q10-1 5-7l-14-11Z" fill="#4b4138"/><path d="M241 591h29m29 0h27" stroke="#9e8262" stroke-width="1.2"/>'}
- <path d="m217 299-9 28q-3 14 5 20 6 0 7-13l8-28ZM336 303l8 28q1 9-4 13-8-2-9-15l-5-19Z" fill="#c99a78" stroke="#ad7e61" stroke-width=".7"/>
+ <path
+  d="${hands}"
+  fill="#c99a78"
+  stroke="#ad7e61"
+  stroke-width=".7"
+/>
+
+ ${tu ? `
+   <g fill="${col}" stroke="#4e3428" stroke-opacity=".22">
+     <path d="M241 199
+              Q229 202 225 221
+              L207 302
+              Q218 310 232 312
+              L253 244 Z"/>
+     <path d="M315 199
+              Q330 202 334 221
+              L354 302
+              Q344 310 329 312
+              L307 244 Z"/>
+   </g>
+
+   <g fill="url(#${p}shade)">
+     <path d="M241 199
+              Q229 202 225 221
+              L207 302
+              Q218 310 232 312
+              L253 244 Z"/>
+     <path d="M315 199
+              Q330 202 334 221
+              L354 302
+              Q344 310 329 312
+              L307 244 Z"/>
+   </g>
+ ` : ''}
  <path d="M270 164v22q10 17 23 0v-22Z" fill="#ce9d79"/>
  <path d="M270 168q10 7 23 0v8q-10 6-23 0Z" fill="#b98563" opacity=".4"/>
  <path d="${silhouette}" fill="${col}" stroke="#4e3428" stroke-opacity=".22"/>
@@ -48,9 +99,12 @@ export function outfitSVG(c,{exported=false}={}){
  <g fill="none" stroke="#71513d" stroke-width="1" stroke-linecap="round"><path d="m264 142 6-1m21 0 6 1m-15 0-2 10 3 1m-9 7q6 3 12-1"/></g><path d="m264 151 6 1m23-1 5-1" stroke="#bf795e" stroke-width="3" opacity=".25"/>
  ${has('khan-van')?`<path d="M252 119q-7-24 28-27 37 1 34 28-29-14-62-1Z" fill="${col}" stroke="#6a5740"/><path d="M253 114q31-16 60 0m-57-8q25-12 52-1" stroke="#e3cfab" stroke-opacity=".6" fill="none"/>`:''}
  ${has('non-la')?'<path d="M219 118 279 66 346 116Q288 134 219 118Z" fill="#d3b777" stroke="#9c8350" stroke-width="1.2"/><path d="M227 112q55 12 111-1m-98-10q40 8 84 0m-70-12q28 5 53 1m-27-22-3 54m3-54-36 50m36-50 40 49" fill="none" stroke="#aa8e54" stroke-width=".7"/><path d="M241 120q12 82 66 13" fill="none" stroke="#796d59" stroke-width="2"/><ellipse cx="282" cy="118" rx="62" ry="5" fill="#b5975c" opacity=".35"/>':''}
+ <g transform="translate(${tu ? 0 : ngu ? 9 : 4} 0)">
  ${has('quat')?'<g transform="translate(340 326) rotate(14)"><path d="M0 0-50-52Q-2-87 39-43Z" fill="#dbbb78" stroke="#9f8658"/><path d="m0 0-50-52M0 0l-37-60M0 0l-22-64M0 0l-8-64M0 0 8-62M0 0l22-55M0 0l39-43" stroke="#947544" stroke-width=".9"/><path d="M-46-48Q-5-80 35-39" fill="none" stroke="#b04735" stroke-width="6" opacity=".75"/><circle r="3" fill="#785838"/></g>':''}
  ${has('tui-may')?'<path d="M325 354q0-41 17-41 18 1 20 41" fill="none" stroke="#8e714a" stroke-width="4"/><path d="M322 348h44l7 48q-27 17-55 0Z" fill="#bea073" stroke="#967449"/><path d="M322 357h45m-46 8h48m-49 8h50m-51 8h53m-52 8h52m-42-40-5 48m16-48v51m10-51 5 48" stroke="#89683c" stroke-opacity=".55"/>':''}
- <path d="m335 325 5 4q6-1 7 3l-4 5q-9 0-9-10" fill="#c99a78"/>
+ ${has('quat') || has('tui-may')
+  ? '<path d="m335 325 5 4q6-1 7 3l-4 5q-9 0-9-10" fill="#c99a78"/>'
+  : ''}
  </g>
  <rect width="560" height="660" fill="url(#${p}grain)" pointer-events="none"/>
  ${exported?`<rect y="613" width="560" height="47" fill="#f6f0e4"/><text x="24" y="636" fill="#873d30" font-family="'Times New Roman','Noto Serif',serif" font-size="16">Nếp Việt · ${escapeHtml(d.garment.name)}</text><text x="24" y="651" fill="#706659" font-family="sans-serif" font-size="10">Mockup minh họa · ${escapeHtml(d.color.name+' · '+d.style.name)}</text>`:''}

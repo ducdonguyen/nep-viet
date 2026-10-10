@@ -64,23 +64,6 @@ node scripts/check.mjs
 
 Chạy các lệnh từ thư mục `nep-viet`.
 
-`tests/domain.test.mjs` và `scripts/check.mjs` đã được cập nhật theo cấu trúc mới (không còn tham chiếu `dist/`). Khi thêm hoặc đổi tên module trong `js/`, hãy cập nhật bảng module trong `docs/architecture.md`, nếu không `check.mjs` sẽ báo thiếu.
-
-Bảng đối chiếu đường dẫn cũ sang mới, để tham khảo nếu bạn còn bản cũ có thư mục `dist/`:
-
-| Đường dẫn cũ | Đường dẫn mới |
-|---|---|
-| `dist/catalog.mjs` | `js/data/catalog.mjs` |
-| `dist/domain.mjs` | `js/core/domain.mjs` |
-| `dist/storage.mjs` | `js/core/storage.mjs` |
-| `dist/render.mjs` | `js/components/mannequin.mjs` (hàm `icon` nay ở `js/components/icons.mjs`) |
-| `dist/app.mjs` | `js/app.mjs` |
-| `dist/styles.css` | `css/*.css` (6 file) |
-| `dist/index.html` | `index.html` |
-| `dist/architecture.html`, `dist/architecture.md`, `dist/document.js` | `docs/architecture.html`, `docs/architecture.md`, `docs/document.js` |
-| `dist/favicon.svg` | `assets/images/favicon.svg` |
-
-Lưu ý: trên Windows, `docs/ARCHITECTURE.md` và `docs/architecture.md` là cùng một tên file. Chỉ giữ một bản.
 
 ## 4. Những gì đã có
 
@@ -94,15 +77,5 @@ Chưa có backend, tài khoản, đồng bộ cloud hay thử đồ bằng ảnh
 
 Nội dung văn hóa có nguồn tham khảo nhưng chưa được chuyên gia cổ phục thẩm định. Xem `docs/VERIFICATION.md` để biết phạm vi kiểm tra và giới hạn kiểm thử giao diện.
 
-Gói mã nguồn không chứa lịch sử Git, thông tin triển khai riêng tư hoặc khóa bí mật. Bạn có thể tạo repository và triển khai lên hosting tĩnh mình chọn (đưa cả thư mục `nep-viet` lên, không cần build).
 
-## 6. Chữ tiếng Việt bị tách dấu ("Nê´p", "chă´t")?
 
-Lỗi này xảy ra với chữ có hai dấu chồng trên một nguyên âm (ế, ấ, ề, ố, ệ...) khi phông chữ không thiết kế sẵn các ký tự đó; trình duyệt phải ghép dấu rời nên dấu rơi lệch ra ngoài. Phông Georgia thường gây lỗi này trên Windows.
-
-Ứng dụng đã dùng cách sau (xem `--serif` trong `css/variables.css`): ưu tiên Lora (Google Fonts, hỗ trợ đầy đủ tiếng Việt), dự phòng Times New Roman. Nếu vẫn thấy lỗi:
-
-1. Mở DevTools (F12) → tab Network → kiểm tra Lora có tải được không (cần có mạng).
-2. Nếu muốn chạy hoàn toàn ngoại tuyến, tải Lora (định dạng woff2, có bộ ký tự Vietnamese) từ Google Fonts, đặt vào `assets/fonts/` và khai báo `@font-face` trong `css/variables.css`.
-3. Khi đổi sang phông khác, chọn phông có nhãn Vietnamese và thử gõ "Nếp xưa, chất liệu, ầ ẫ ổ ệ" để kiểm tra.
-4. Tệp SVG tải về dùng Times New Roman cho dòng chú thích, vì máy người nhận có thể không có Lora.

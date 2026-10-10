@@ -10,7 +10,7 @@
   --line:#e1dbcc;
   --olive:#59644c;
   --gold:#ba914a;
-  --serif:Georgia,'Times New Roman',serif;
+  --serif:'Lora','Times New Roman','Noto Serif',Georgia,serif;
   --sans:Arial,Helvetica,sans-serif;
   color-scheme:light
 }

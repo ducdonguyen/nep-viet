@@ -53,6 +53,6 @@ export function outfitSVG(c,{exported=false}={}){
  <path d="m335 325 5 4q6-1 7 3l-4 5q-9 0-9-10" fill="#c99a78"/>
  </g>
  <rect width="560" height="660" fill="url(#${p}grain)" pointer-events="none"/>
- ${exported?`<rect y="613" width="560" height="47" fill="#f6f0e4"/><text x="24" y="636" fill="#873d30" font-family="Georgia,serif" font-size="16">Nếp Việt · ${escapeHtml(d.garment.name)}</text><text x="24" y="651" fill="#706659" font-family="sans-serif" font-size="10">Mockup minh họa · ${escapeHtml(d.color.name+' · '+d.style.name)}</text>`:''}
+ ${exported?`<rect y="613" width="560" height="47" fill="#f6f0e4"/><text x="24" y="636" fill="#873d30" font-family="'Times New Roman','Noto Serif',serif" font-size="16">Nếp Việt · ${escapeHtml(d.garment.name)}</text><text x="24" y="651" fill="#706659" font-family="sans-serif" font-size="10">Mockup minh họa · ${escapeHtml(d.color.name+' · '+d.style.name)}</text>`:''}
  </svg>`;
 }

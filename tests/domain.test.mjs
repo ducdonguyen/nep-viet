@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {DEFAULT_CONFIG,GARMENTS,COLORS,PRESETS,OCCASIONS,ACCESSORIES} from '../dist/catalog.mjs';
-import {cloneConfig,validConfig,updateConfig,toggleAccessory,recommend,describe,encodeConfig,decodeConfig,parseBackup,makeBackup,escapeHtml} from '../dist/domain.mjs';
-import {createRepository} from '../dist/storage.mjs';
-import {outfitSVG} from '../dist/render.mjs';
+import {DEFAULT_CONFIG,GARMENTS,COLORS,PRESETS,OCCASIONS,ACCESSORIES} from '../js/data/catalog.mjs';
+import {cloneConfig,validConfig,updateConfig,toggleAccessory,recommend,describe,encodeConfig,decodeConfig,parseBackup,makeBackup,escapeHtml} from '../js/core/domain.mjs';
+import {createRepository} from '../js/core/storage.mjs';
+import {outfitSVG} from '../js/components/mannequin.mjs';
 
 const newLook=(i=0)=>({id:`look-id-${i}`,name:`Bản phối ${i}`,createdAt:'2026-10-08T00:00:00.000Z',config:cloneConfig()});
 function memoryStorage(){const map=new Map();return {map,getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};}

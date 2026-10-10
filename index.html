@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#f7f3ea">
+ <meta name="description" content="Nếp Việt — khám phá và phối áo dài, áo tứ thân, áo ngũ thân theo gu của bạn. Nếp xưa, gu mới.">
+ <title>Nếp Việt — Nếp xưa, gu mới</title>
+ <link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
+ <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+ <a class="skip-link" href="#main">Đến nội dung chính</a>
+ <header class="site-header">
+  <button class="brand" data-action="view" data-view="studio" aria-label="Nếp Việt — phòng phối đồ"><span class="brand-mark">n<span>v</span></span><span class="brand-name">nếp việt<span>VIỆT PHỤC REMIX</span></span></button>
+  <nav class="main-nav" aria-label="Điều hướng chính"><button data-action="view" data-view="explore">Khám phá</button><button data-action="view" data-view="studio" class="active" aria-current="page">Phòng phối đồ</button><button data-action="view" data-view="collection">Bộ sưu tập <span class="count" id="book-count">0</span></button></nav>
+  <button class="header-note" data-action="about"><span class="dot"></span> Một chút Việt, rất là bạn <span class="tiny-star">✳</span></button>
+ </header>
+ <main id="main" tabindex="-1">
+  <section id="studio-view" class="page-view">
+   <div class="intro"><div><p class="eyebrow"><span></span> TỪ DI SẢN, ĐẾN PHONG CÁCH CỦA BẠN</p><h1>Nếp xưa, <em>gu mới.</em></h1><p class="intro-copy">Một tà áo quen. Một cách phối riêng. Cùng kể tiếp câu chuyện Việt phục.</p></div><div class="intro-side"><span class="seal">NẾP<br>VIỆT</span><p>Giữ nét văn hóa.<br>Thêm chất riêng.</p></div></div>
+   <div class="workspace-heading"><h2><span class="live-dot"></span> Góc phối đồ của bạn</h2><button class="text-button" data-action="reset" id="reset-button"></button></div>
+   <div class="workspace">
+    <aside class="controls-panel" aria-label="Tùy chỉnh bản phối">
+     <div class="control-block"><div class="section-label"><span class="step">01</span><h3>Chọn một nếp áo</h3></div><div id="garment-options" class="garment-options"></div></div>
+     <div class="control-block"><div class="section-label"><span class="step">02</span><h3>Bạn mặc dịp nào?</h3></div><label class="sr-only" for="occasion">Dịp sử dụng</label><div class="select-wrap"><span id="occasion-icon"></span><select id="occasion" name="occasion"></select></div><div id="style-options" class="style-options" aria-label="Phong cách"></div></div>
+     <div class="control-block"><div class="section-label"><span class="step">03</span><h3>Chấm một chút màu</h3></div><div class="label-row"><span>Màu áo</span><strong id="color-name"></strong></div><div id="color-options" class="swatches" aria-label="Màu áo"></div><div class="label-row bottom-label"><span id="bottom-label">Màu quần</span><div id="bottom-options" class="small-swatches" aria-label="Màu phần dưới"></div></div></div>
+     <div class="control-block last"><div class="section-label"><span class="step">04</span><h3>Thêm điểm nhấn</h3></div><div id="accessory-options" class="accessory-options"></div><p class="control-hint">Mỗi lần chọn một phụ kiện đội đầu<br>và một phụ kiện cầm tay.</p></div>
+     <button class="suggest-button" data-action="suggest" id="suggest-button"></button>
+    </aside>
+    <section class="preview-panel" aria-label="Kết quả phối đồ">
+     <div class="preview-top"><span class="preview-tag">BẢN PHỐI <span id="preview-number">01</span></span><button class="icon-button" data-action="share" aria-label="Chia sẻ bản phối" title="Chia sẻ bản phối" id="share-button"></button></div>
+     <div id="preview-image" class="preview-image"></div>
+     <div class="preview-caption"><span id="preview-title"></span><span>MOCKUP MINH HỌA</span></div>
+     <div class="preview-toolbar"><div class="toolbar-choice"><span>Nhân vật</span><div id="avatar-options" class="segmented"></div></div><div class="toolbar-choice"><span>Phông nền</span><div id="backdrop-options" class="segmented"></div></div></div>
+     <div class="preview-actions"><button class="primary-button" data-action="save" id="save-button"></button><button class="outline-button" data-action="download" id="download-button"></button></div>
+    </section>
+    <aside class="insight-panel" aria-label="Gợi ý và câu chuyện văn hóa">
+     <div class="story-card"><div class="card-kicker"><span id="story-icon"></span> CHUYỆN CỦA TÀ ÁO</div><p class="region" id="story-region"></p><h2 id="story-title"></h2><p class="story-copy" id="story-copy"></p><button class="story-more text-button" data-action="story" id="story-more"></button><div class="story-decoration" aria-hidden="true"><span>✳</span><i></i><span>✳</span></div></div>
+     <div class="summary-card"><p class="card-kicker">BẢN PHỐI CỦA BẠN</p><div id="summary-details"></div><div class="harmony" id="harmony"></div><p class="advice" id="advice"></p></div>
+     <div class="culture-note"><span id="culture-icon"></span><div><strong>Mặc đẹp, hiểu đúng</strong><p id="culture-note"></p></div></div>
+    </aside>
+   </div>
+   <section class="inspiration-section"><div class="section-heading"><div><p class="eyebrow">MỘT CHÚT CẢM HỨNG</p><h2>Bắt đầu từ một bản phối</h2></div><span>Chọn một mẫu. Biến tấu theo bạn.</span></div><div id="preset-grid" class="preset-grid"></div></section>
+   <div class="manifesto"><span class="manifesto-flower" aria-hidden="true">✳</span><p>Văn hóa không đứng yên.<br><em>Cùng mang nét Việt vào hôm nay.</em></p><button class="outline-button" data-action="view" data-view="explore">Khám phá Việt phục <span aria-hidden="true">↗</span></button></div>
+  </section>
+  <section id="explore-view" class="page-view" hidden><div class="intro compact"><div><p class="eyebrow">MỖI NẾP ÁO, MỘT CÂU CHUYỆN</p><h1>Chạm vào <em>nét Việt.</em></h1><p class="intro-copy">Hiểu một chút về tà áo, để mỗi lần mặc đều có ý nghĩa riêng.</p></div></div><div class="explore-toolbar"><div id="region-filters" class="filter-pills"></div><span>03 trang phục được tuyển chọn</span></div><div id="explore-grid" class="explore-grid"></div><div class="editorial-note"><strong>Một điểm bắt đầu để tìm hiểu.</strong><p>Ba nhóm áo này không đại diện cho toàn bộ trang phục các cộng đồng tại Việt Nam. Nội dung có nguồn đọc thêm, chưa được chuyên gia cổ phục thẩm định; hình là mockup giản lược. Địa phương dưới đây là bối cảnh tìm hiểu, không giới hạn nơi có thể mặc.</p></div></section>
+  <section id="collection-view" class="page-view" hidden><div class="intro compact"><div><p class="eyebrow">CẤT GIỮ NHỮNG ĐIỀU MÌNH THÍCH</p><h1>Một tủ áo, <em>nhiều chất riêng.</em></h1><p class="intro-copy">Những bản phối của bạn, được lưu trên trình duyệt này.</p></div></div><div class="collection-toolbar"><p id="collection-total"></p><div><button class="outline-button small" data-action="backup" id="backup-button"></button><button class="outline-button small" data-action="import" id="import-button"></button><input type="file" id="import-file" accept="application/json,.json" hidden></div></div><p class="storage-note">Tải bản sao lưu để giữ lại bộ sưu tập khi đổi thiết bị hoặc xóa dữ liệu trình duyệt. Tối đa 50 bản phối.</p><div id="collection-grid" class="collection-grid"></div><div id="compare-bar" class="compare-bar" hidden></div></section>
+ </main>
+ <footer class="site-footer"><div><span class="footer-brand">nếp việt</span><span>Gìn giữ nét xưa · Viết tiếp chuyện mình</span></div><div><a href="./architecture.html">Kiến trúc dự án</a><button data-action="about">Về phiên bản này</button><span>PHIÊN BẢN 1.0</span></div></footer>
+ <dialog id="modal" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title"></h2><button class="icon-button" data-action="close" aria-label="Đóng" id="modal-close"></button></div><div id="modal-content"></div></dialog>
+ <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+ <noscript><p class="noscript">Vui lòng bật JavaScript để sử dụng phòng phối đồ. Bạn vẫn có thể đọc <a href="./architecture.html">kiến trúc dự án</a>.</p></noscript>
+</body></html>
